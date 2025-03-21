@@ -1,6 +1,6 @@
 # 🚀 AI-Powered Pitch Analysis Model using Gemini API
 
-<!-- [![Try on Hugging Face](https://img.shields.io/badge/-HuggingFace-FDEE21?style=for-the-badge&logo=HuggingFace&logoColor=black)](https://huggingface.co/spaces/smit-faldu/Audio_Translation)  -->
+[![Try on Hugging Face](https://img.shields.io/badge/-HuggingFace-FDEE21?style=for-the-badge&logo=HuggingFace&logoColor=black)](https://huggingface.co/spaces/smit-faldu/AI-Powered-Pitch-Analysis-Model) 
 [![Open in Colab](https://img.shields.io/badge/Colab-F9AB00?style=for-the-badge&logo=googlecolab&color=525252)](https://colab.research.google.com/drive/1qpGDnzMy1cWvv5NcO1A1_qBwTQPBtMpW?usp=sharing)
 
 
