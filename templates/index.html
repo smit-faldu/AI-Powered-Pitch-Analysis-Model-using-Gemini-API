@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Pitch Deck Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
+    <div class="w-full max-w-2xl bg-white p-6 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-bold mb-4 text-center text-gray-700">Upload Pitch Deck (PDF)</h2>
+        
+        <!-- File Upload Form -->
+        <form id="uploadForm" enctype="multipart/form-data" class="space-y-4">
+            <input type="file" id="fileInput" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" accept=".pdf" required>
+            <button class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-300" type="submit">Analyze Pitch</button>
+        </form>
+
+        <!-- Loading Indicator -->
+        <div id="loading" class="hidden text-center text-gray-600 mt-4">
+            <p class="animate-pulse">Analyzing pitch deck... Please wait</p>
+        </div>
+
+        <!-- Results Section -->
+        <div id="results" class="mt-6 hidden">
+            <h3 class="text-xl font-semibold text-gray-800">Pitch Analysis Results:</h3>
+
+            <div class="mt-2 p-3 bg-gray-100 rounded-lg">
+                <p class="font-semibold text-gray-700">Overall Pitch Score: <span id="pitchScore" class="text-blue-600"></span></p>
+            </div>
+
+            <div class="mt-4">
+                <p class="font-semibold text-gray-700">Strengths:</p>
+                <div class="max-h-40 overflow-y-auto p-3 bg-green-50 border-l-4 border-green-400 rounded-lg">
+                    <p id="strengths" class="text-gray-700"></p>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <p class="font-semibold text-gray-700">Weaknesses:</p>
+                <div class="max-h-40 overflow-y-auto p-3 bg-red-50 border-l-4 border-red-400 rounded-lg">
+                    <p id="weaknesses" class="text-gray-700"></p>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <p class="font-semibold text-gray-700">Improvement Suggestions:</p>
+                <div class="max-h-40 overflow-y-auto p-3 bg-yellow-50 border-l-4 border-yellow-400 rounded-lg">
+                    <p id="improvements" class="text-gray-700"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for Handling Upload -->
+    <script>
+        document.getElementById("uploadForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const fileInput = document.getElementById("fileInput").files[0];
+            if (!fileInput) {
+                alert("Please select a PDF file.");
+                return;
+            }
+
+            // Show loading indicator
+            document.getElementById("loading").classList.remove("hidden");
+            document.getElementById("results").classList.add("hidden");
+
+            const formData = new FormData();
+            formData.append("file", fileInput);
+
+            try {
+                const response = await fetch("/upload", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                // Hide loading indicator and show results
+                document.getElementById("loading").classList.add("hidden");
+                document.getElementById("results").classList.remove("hidden");
+
+                // Populate results
+                document.getElementById("pitchScore").textContent = data["Overall Pitch Score"] || "N/A";
+                document.getElementById("strengths").textContent = data["Strengths"] || "No strengths detected";
+                document.getElementById("weaknesses").textContent = data["Weaknesses"] || "No weaknesses detected";
+                document.getElementById("improvements").textContent = data["Improvement Suggestions"] || "No suggestions provided";
+
+            } catch (error) {
+                console.error("Error:", error);
+                document.getElementById("loading").classList.add("hidden");
+                alert("Failed to analyze the pitch. Please try again.");
+            }
+        });
+    </script>
+</body>
+</html>
